@@ -3,6 +3,8 @@
 
 #include "node.hpp"
 #include <iostream>
+#include <cstddef>
+
 using std::cout;
 using std::endl;
 
@@ -13,6 +15,74 @@ private:
 Node<T> * head_;
 Node<T> * tail_;
 unsigned long long count_;
+
+void merge_sort(Node<T> ** a) {
+  if (count_ <= 1) {
+    return;
+  }
+  
+  Node<T> * list1;
+  Node<T> * list2;
+
+  split(*a, &list1, &list2);
+
+  merge_sort(&list1);
+  merge_sort(&list2);
+
+  *a = merge(list1, list2);
+}
+
+Node<T> * merge(Node<T> * a, Node<T> * b) {
+  if(a == nullptr) {
+    return b;
+  }
+
+  if (b == nullptr) {
+    return a;
+  }
+
+  if (a->get_value() < b->get_value()) {
+    a->set_next(merge(a->get_next(), b));
+    a->get_next()->set_previous(a);
+    a->remove_previous();
+    
+    return a;
+  }
+  
+  b->set_next(merge(a, b->get_next()));
+  b->get_next()->set_previous(b);
+  b->remove_previous();
+
+  return b;
+}
+
+void split(Node<T> * a, Node<T> ** b, Node<T> ** c) {
+  Node<T> * fast;
+  Node<T> * slow;
+
+  if (a == nullptr || a->get_next() == nullptr) {
+    *b = a;
+    *c = nullptr;
+  } else {
+    slow = a;
+    fast = a->get_next();
+
+    while (fast != nullptr) {
+      fast = fast->get_next();
+      if (fast != nullptr) {
+        slow = slow->get_next();
+        fast = fast->get_next();
+      }
+    }
+
+    *b = a;
+    *c = slow->get_next();
+    
+  }
+
+  
+}
+
 public:
 DoublyLinkedList() {
   head_= nullptr;
@@ -41,7 +111,7 @@ unsigned long long count() {
  */
 T at (unsigned long long index) {
   if (index < 0 || index > count_) {
-    return nullptr;
+    return NULL;
   }
 
   auto *node = head_;
@@ -224,6 +294,10 @@ long long index_of(T value) {
   }
 
   return -1;
+}
+
+void sort() {
+  merge_sort(&head_);
 }
 
 };

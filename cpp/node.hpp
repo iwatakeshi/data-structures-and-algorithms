@@ -48,9 +48,13 @@ public:
    void remove_next() {
      next_ = nullptr;
    }
-
+ 
    T get_value() {
      return value_;
+   }
+
+   void set_value(T value) {
+     value_ = value;
    }
 };
 
