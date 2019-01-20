@@ -33,7 +33,7 @@ T pop() {
 }
 
 T front() {
-  return at(0)
+  return at(0);
 }
 
 T back() {
