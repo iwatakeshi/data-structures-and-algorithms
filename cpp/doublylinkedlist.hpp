@@ -16,28 +16,25 @@ Node<T> * head_;
 Node<T> * tail_;
 unsigned long long count_;
 
-void merge_sort(Node<T> ** a) {
-  if (count_ <= 1) {
-    return;
+Node<T> * merge_sort(Node<T> * a) {
+  if (!a || !a->get_next()) {
+    return a;
   }
   
-  Node<T> * list1;
-  Node<T> * list2;
+  Node<T> * b = split(a);
 
-  split(*a, &list1, &list2);
+  a = merge_sort(a);
+  b = merge_sort(b);
 
-  merge_sort(&list1);
-  merge_sort(&list2);
-
-  *a = merge(list1, list2);
+  return merge(a, b);
 }
 
 Node<T> * merge(Node<T> * a, Node<T> * b) {
-  if(a == nullptr) {
+  if(!a) {
     return b;
   }
 
-  if (b == nullptr) {
+  if (!b) {
     return a;
   }
 
@@ -45,42 +42,27 @@ Node<T> * merge(Node<T> * a, Node<T> * b) {
     a->set_next(merge(a->get_next(), b));
     a->get_next()->set_previous(a);
     a->remove_previous();
-    
     return a;
+  } else {
+    b->set_next(merge(a, b->get_next()));
+    b->get_next()->set_previous(b);
+    b->remove_previous();
+    return b;
   }
-  
-  b->set_next(merge(a, b->get_next()));
-  b->get_next()->set_previous(b);
-  b->remove_previous();
-
-  return b;
 }
 
-void split(Node<T> * a, Node<T> ** b, Node<T> ** c) {
-  Node<T> * fast;
-  Node<T> * slow;
-
-  if (a == nullptr || a->get_next() == nullptr) {
-    *b = a;
-    *c = nullptr;
-  } else {
-    slow = a;
-    fast = a->get_next();
-
-    while (fast != nullptr) {
-      fast = fast->get_next();
-      if (fast != nullptr) {
-        slow = slow->get_next();
-        fast = fast->get_next();
-      }
-    }
-
-    *b = a;
-    *c = slow->get_next();
-    
+Node<T> * split(Node<T> * a) {
+  Node<T> * fast = a;
+  Node<T> * slow = a;
+  
+  while(fast->get_next() && fast->get_next()->get_next()) {
+    fast = fast->get_next()->get_next();
+    slow = slow->get_next();
   }
 
-  
+  Node<T> *temp = slow->get_next();
+  slow->remove_next();
+  return temp;
 }
 
 public:
@@ -106,6 +88,8 @@ unsigned long long count() {
   return count_;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-conversion"
 /**
  * Return the value at the specified index.
  */
@@ -113,6 +97,7 @@ T at (unsigned long long index) {
   if (index < 0 || index > count_) {
     return NULL;
   }
+#pragma GCC diagnostic pop
 
   auto *node = head_;
 
@@ -167,7 +152,7 @@ void add_tail(T value) {
 /**
  * Add a value at the specified index.
  */
-void add(long long index, T value) {
+void add(unsigned long long index, T value) {
   
   if (index == 0) {
     return add_head(value);
@@ -297,7 +282,7 @@ long long index_of(T value) {
 }
 
 void sort() {
-  merge_sort(&head_);
+  head_ = merge_sort(head_);
 }
 
 };
