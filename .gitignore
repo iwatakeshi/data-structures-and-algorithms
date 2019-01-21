@@ -236,3 +236,5 @@ dmypy.json
 .pyre/
 *.plist
 .vscode/launch.json
+cpp/.vscode/launch.json
+cpp/.vscode/settings.json

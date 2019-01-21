@@ -1,5 +1,6 @@
 #ifndef NODE_HPP
 #define NODE_HPP
+#include <cstddef>
 template <class T>
 class Node {
 private:
@@ -9,21 +10,26 @@ private:
 public:
   Node() {
     next_ = nullptr;
-    value_ = nullptr;
+    previous_ = nullptr;
+    value_ = NULL;
   }
   Node(T value) {
     value_ = value;
   }
+
   ~Node() {
+    if (next_) {
+     remove_next();
+    }
 
     if (previous_) {
-      previous_ = nullptr;
+      remove_previous();
     }
 
-    if (next_) {
-      next_ = nullptr;
+    if (value_) {
+      value_ = NULL;
     }
-   }
+  }
 
    Node<T>* get_previous() {
      return previous_;
