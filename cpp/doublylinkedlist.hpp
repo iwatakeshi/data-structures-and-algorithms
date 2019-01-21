@@ -52,33 +52,50 @@ Node<T> * merge(Node<T> * a, Node<T> * b) {
 }
 
 Node<T> * split(Node<T> * a) {
-  Node<T> * fast = a;
+  cout << "Splitting" << endl;
+  Node<T> * fast = a->get_next();
   Node<T> * slow = a;
   
-  while(fast->get_next() && fast->get_next()->get_next()) {
-    fast = fast->get_next()->get_next();
-    slow = slow->get_next();
+  cout << "Before loop" << endl;
+  while(fast != nullptr) {
+    cout << "In loop" << endl;
+    if (fast != nullptr) {
+       slow = slow->get_next();
+       fast = fast->get_next();
+    }
+    fast = fast->get_next();
+    cout << "In loop 2" << endl;
   }
+  cout << "After loop" << endl;
 
   Node<T> *temp = slow->get_next();
+  cout << slow->get_value() << endl;
   slow->remove_next();
   return temp;
 }
 
 public:
 DoublyLinkedList() {
-  head_= nullptr;
+  head_ = nullptr;
   tail_ = nullptr;
   count_ = 0;
 }
 
 ~DoublyLinkedList() {
   count_ = 0;
-  for (long long i = 0; i < count_; i++) {
-    remove(i);
+  while (head_ != nullptr) {
+    auto * temp = head_;
+    head_ = head_->get_next();
+    delete temp;
   }
-  delete head_;
-  delete tail_;
+
+  if (head_) {
+    delete head_;
+  }
+
+  if (tail_) {
+    delete tail_;
+  }
 }
 
 /**
@@ -280,6 +297,13 @@ long long index_of(T value) {
 
 void sort() {
   head_ = merge_sort(head_);
+  auto * node = head_;
+  while (node->get_next()) {
+    node = node->get_next();
+  }
+
+  tail_ = node;
+
 }
 
 };
