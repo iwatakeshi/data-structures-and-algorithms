@@ -88,8 +88,6 @@ unsigned long long count() {
   return count_;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wnull-conversion"
 /**
  * Return the value at the specified index.
  */
@@ -97,7 +95,6 @@ T at (unsigned long long index) {
   if (index < 0 || index > count_) {
     return NULL;
   }
-#pragma GCC diagnostic pop
 
   auto *node = head_;
 

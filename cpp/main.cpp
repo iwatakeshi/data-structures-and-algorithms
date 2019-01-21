@@ -15,9 +15,9 @@ int main() {
   list->add_tail(5);
   list->sort();
 
-  // for (int i = 0; i < list->count(); i++) {
-  //   cout << list->at(i) << " " << i << endl;
-  // }
+  for (int i = 0; i < list->count(); i++) {
+    cout << list->at(i) << " " << i << endl;
+  }
 
   delete list;
 
