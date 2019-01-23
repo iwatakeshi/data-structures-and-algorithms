@@ -24,14 +24,21 @@ Node<T> * merge_sort(Node<T> * head) {
   Node<T> * a = head;
   Node<T> * b = head->get_next();
   cout << "Splitting" << endl;
-  while((b != nullptr) && (b->get_next())) {
+  cout << a << endl << b <<endl;
+  while((b != nullptr) && (b->has_next())) {
+    cout << "HERE" << endl;
     a = a->get_next();
-    b = b->get_next()->get_next();
+    if (b->get_next()->has_next()) {
+      b = b->get_next()->get_next();
+    }
+    cout << a << endl << b << endl;
   }
+  cout << "END SPLIT" << endl;
     
   b = a->get_next();
   a->set_next(nullptr);
-    
+  cout << "HEAD: " << head << endl;
+  cout << "B: " << b << endl;
   return merge(merge_sort(head), merge_sort(b));
 }
 
@@ -122,7 +129,7 @@ T at (unsigned long long index) {
  */
 void add_head(T value) {
   auto * node = new Node<T>(value);
-
+  cout << "ADD_HEAD: " << node << endl; 
   if (count_ == 0 && head_ == nullptr) {
     head_ = node;
     tail_ = node;
@@ -149,6 +156,7 @@ void add_tail(T value) {
     delete node;
     return add_head(value);
   }
+  cout << "ADD_TAIL: " << node << endl;
   // [old tail]-> [new tail]
   tail_->set_next(node);
   // [old tail] <- [new tail]
