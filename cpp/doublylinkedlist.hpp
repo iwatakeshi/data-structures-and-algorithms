@@ -16,20 +16,27 @@ Node<T> * head_;
 Node<T> * tail_;
 unsigned long long count_;
 
-Node<T> * merge_sort(Node<T> * a) {
-  if (!a || !a->get_next()) {
-    return a;
+Node<T> * merge_sort(Node<T> * head) {
+  if (!head || !head->has_next()) {
+    return head;
   }
-  
-  Node<T> * b = split(a);
 
-  a = merge_sort(a);
-  b = merge_sort(b);
-
-  return merge(a, b);
+  Node<T> * a = head;
+  Node<T> * b = head->get_next();
+  cout << "Splitting" << endl;
+  while((b != nullptr) && (b->get_next())) {
+    a = a->get_next();
+    b = b->get_next()->get_next();
+  }
+    
+  b = a->get_next();
+  a->set_next(nullptr);
+    
+  return merge(merge_sort(head), merge_sort(b));
 }
 
 Node<T> * merge(Node<T> * a, Node<T> * b) {
+  cout << "MERGING" << endl;
   if(!a) {
     return b;
   }
@@ -52,19 +59,18 @@ Node<T> * merge(Node<T> * a, Node<T> * b) {
 }
 
 Node<T> * split(Node<T> * a) {
-  Node<T> * fast = a->get_next();
-  Node<T> * slow = a;
-  
-  while(fast != nullptr) {
-    fast = fast->get_next();
-    if (fast != nullptr) {
+  Node<T> * fast = a, * slow = a;
+  while (fast->has_next() && fast->get_next()->has_next()) {
+    if (fast && fast->get_next()->has_next()) {
+      fast = fast->get_next()->get_next();
+    }
+    if (slow && slow->has_next()) {
        slow = slow->get_next();
-       fast = fast->get_next();
     }
   }
-
-  Node<T> *temp = slow->get_next();
-  slow->remove_next();
+  cout << "HERE 2" << endl;
+  Node<T> *temp = slow->get_next(); 
+  slow->remove_next(); 
   return temp;
 }
 
@@ -76,22 +82,15 @@ DoublyLinkedList() {
 }
 
 ~DoublyLinkedList() {
+  Node<T> * t = tail_;
+  while(t != nullptr) {
+    Node<T> * t2 = t;
+    t = t->get_previous();
+    delete t2;
+  }
+  head_ = nullptr;
+  tail_ = nullptr;
   count_ = 0;
-  auto * node = head_->get_next();
-  while (node) {
-    head_->set_next(node->get_next());
-    node->remove_next();
-    delete node;
-    node = head_->get_next();
-  }
-
-  if (head_) {
-    head_ = nullptr;
-  }
-
-  if (tail_) {
-    tail_ = nullptr;
-  }
 }
 
 /**
@@ -124,9 +123,9 @@ T at (unsigned long long index) {
 void add_head(T value) {
   auto * node = new Node<T>(value);
 
-  if (count_ == 0) {
+  if (count_ == 0 && head_ == nullptr) {
     head_ = node;
-    tail_ = head_;
+    tail_ = node;
     count_ += 1;
     return;
   }
@@ -146,7 +145,8 @@ void add_head(T value) {
 void add_tail(T value) {
   auto *node = new Node<T>(value);
 
-  if (count_ == 0) {
+  if (count_ == 0 && tail_ == nullptr) {
+    delete node;
     return add_head(value);
   }
   // [old tail]-> [new tail]
@@ -293,7 +293,7 @@ long long index_of(T value) {
 void sort() {
   head_ = merge_sort(head_);
   auto * node = head_;
-  while (node->get_next()) {
+  while (node->has_next()) {
     node = node->get_next();
   }
 

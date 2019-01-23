@@ -32,11 +32,18 @@ public:
   }
 
    Node<T>* get_previous() {
-     return previous_;
+     return (!has_previous() ? nullptr : previous_);
    }
 
    void set_previous(Node<T> * node) {
      previous_ = node;
+   }
+
+   bool has_previous() {
+     if (previous_) {
+       return true;
+     }
+     return false;
    }
 
    void remove_previous() {
@@ -44,11 +51,18 @@ public:
    }
    
    Node<T>* get_next() {
-     return next_;
+     return (!has_next() ? nullptr : next_);
    }
 
    void set_next(Node<T> * node) {
      next_ = node;
+   }
+
+   bool has_next() {
+     if (next_) {
+       return true;
+     }
+     return false;
    }
 
    void remove_next() {
