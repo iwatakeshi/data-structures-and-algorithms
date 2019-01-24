@@ -4,15 +4,10 @@
 template <class T>
 class Node {
 private:
-  Node<T> * previous_;
-  Node<T> * next_;
-  T value_;
+  Node<T> * previous_ = nullptr;
+  Node<T> * next_ = nullptr;
+  T value_ = NULL;
 public:
-  Node() {
-    next_ = nullptr;
-    previous_ = nullptr;
-    value_ = NULL;
-  }
   Node(T value) {
     value_ = value;
   }

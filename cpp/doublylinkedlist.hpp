@@ -12,93 +12,71 @@ template <class T>
 class DoublyLinkedList {
 
 private:
-Node<T> * head_;
-Node<T> * tail_;
-unsigned long long count_;
+Node<T> * head_ = nullptr;
+Node<T> * tail_ = nullptr;
+unsigned long long count_ = 0;
 
-Node<T> * merge_sort(Node<T> * head) {
-  if (!head || !head->has_next()) {
-    return head;
-  }
+Node<T> *merge_sort(Node<T> *head){
+  if (!head || !head->get_next())
+      return head;
+  Node<T> *second = split(head);
 
-  Node<T> * a = head;
-  Node<T> * b = head->get_next();
-  cout << "Splitting" << endl;
-  cout << a << endl << b <<endl;
-  while((b != nullptr) && (b->has_next())) {
-    cout << "HERE" << endl;
-    a = a->get_next();
-    if (b->get_next()->has_next()) {
-      b = b->get_next()->get_next();
-    }
-    cout << a << endl << b << endl;
-  }
-  cout << "END SPLIT" << endl;
-    
-  b = a->get_next();
-  a->set_next(nullptr);
-  cout << "HEAD: " << head << endl;
-  cout << "B: " << b << endl;
-  return merge(merge_sort(head), merge_sort(b));
+  // Recur for left and right halves
+  head = merge_sort(head);
+  second = merge_sort(second);
+
+  // Merge the two sorted halves
+  return merge(head, second);
 }
 
-Node<T> * merge(Node<T> * a, Node<T> * b) {
-  cout << "MERGING" << endl;
-  if(!a) {
-    return b;
-  }
-
-  if (!b) {
-    return a;
-  }
-
-  if (a->get_value() < b->get_value()) {
-    a->set_next(merge(a->get_next(), b));
-    a->get_next()->set_previous(a);
-    a->remove_previous();
-    return a;
-  } else {
-    b->set_next(merge(a, b->get_next()));
-    b->get_next()->set_previous(b);
-    b->remove_previous();
-    return b;
-  }
-}
-
-Node<T> * split(Node<T> * a) {
-  Node<T> * fast = a, * slow = a;
-  while (fast->has_next() && fast->get_next()->has_next()) {
-    if (fast && fast->get_next()->has_next()) {
+Node<T> *split(Node<T> *head) {
+  Node<T> *fast = head, *slow = head;
+  while (fast->get_next() && fast->get_next()->get_next()) {
       fast = fast->get_next()->get_next();
-    }
-    if (slow && slow->has_next()) {
-       slow = slow->get_next();
-    }
+      slow = slow->get_next();
   }
-  cout << "HERE 2" << endl;
-  Node<T> *temp = slow->get_next(); 
-  slow->remove_next(); 
+  Node<T> *temp = slow->get_next();
+  slow->remove_next();
   return temp;
 }
 
-public:
-DoublyLinkedList() {
-  head_ = nullptr;
-  tail_ = nullptr;
-  count_ = 0;
+Node<T> *merge(Node<T> *first, Node<T> *second) {
+  // If first linked list is empty
+  if (!first)
+      return second;
+
+  // If second linked list is empty
+  if (!second)
+      return first;
+
+  // Pick the smaller value
+  if (first->get_value() < second->get_value()) {
+    first->set_next(merge(first->get_next(), second));
+    first->get_next()->set_previous(first);
+    first->remove_previous();
+    return first;
+  }
+  else {
+    second->set_next(merge(first, second->get_next()));
+    second->get_next()->set_previous(second);
+    second->remove_previous();
+    return second;
+  }
 }
 
-~DoublyLinkedList() {
-  Node<T> * t = tail_;
-  while(t != nullptr) {
-    Node<T> * t2 = t;
-    t = t->get_previous();
-    delete t2;
-  }
-  head_ = nullptr;
-  tail_ = nullptr;
-  count_ = 0;
-}
+public:
+
+// ~DoublyLinkedList() {
+//   Node<T> * t = tail_;
+//   while(t != nullptr) {
+//     Node<T> * t2 = t;
+//     t = t->get_previous();
+//     delete t2;
+//   }
+//   head_ = nullptr;
+//   tail_ = nullptr;
+//   count_ = 0;
+// }
 
 /**
  * Return the number of items in the list.
@@ -129,7 +107,6 @@ T at (unsigned long long index) {
  */
 void add_head(T value) {
   auto * node = new Node<T>(value);
-  cout << "ADD_HEAD: " << node << endl; 
   if (count_ == 0 && head_ == nullptr) {
     head_ = node;
     tail_ = node;
@@ -156,7 +133,6 @@ void add_tail(T value) {
     delete node;
     return add_head(value);
   }
-  cout << "ADD_TAIL: " << node << endl;
   // [old tail]-> [new tail]
   tail_->set_next(node);
   // [old tail] <- [new tail]
