@@ -3,6 +3,8 @@
 
 #include "node.hpp"
 #include <iostream>
+#include <cstddef>
+
 using std::cout;
 using std::endl;
 
@@ -10,23 +12,70 @@ template <class T>
 class DoublyLinkedList {
 
 private:
-Node<T> * head_;
-Node<T> * tail_;
-unsigned long long count_;
-public:
-DoublyLinkedList() {
-  head_= nullptr;
-  tail_ = nullptr;
-  count_ = 0;
+Node<T> * head_ = nullptr;
+Node<T> * tail_ = nullptr;
+unsigned long long count_ = 0;
+
+Node<T> *merge_sort(Node<T> *head){
+  if (!head || !head->get_next())
+      return head;
+  Node<T> *second = split(head);
+
+  // Recur for left and right halves
+  head = merge_sort(head);
+  second = merge_sort(second);
+
+  // Merge the two sorted halves
+  return merge(head, second);
 }
 
-~DoublyLinkedList() {
-  count_ = 0;
-  for (long long i = 0; i < count_; i++) {
-    remove(i);
+Node<T> *split(Node<T> *head) {
+  Node<T> *fast = head, *slow = head;
+  while (fast->get_next() && fast->get_next()->get_next()) {
+      fast = fast->get_next()->get_next();
+      slow = slow->get_next();
   }
-  delete head_;
-  delete tail_;
+  Node<T> *temp = slow->get_next();
+  slow->remove_next();
+  return temp;
+}
+
+Node<T> *merge(Node<T> *first, Node<T> *second) {
+  // If first linked list is empty
+  if (!first)
+      return second;
+
+  // If second linked list is empty
+  if (!second)
+      return first;
+
+  // Pick the smaller value
+  if (first->get_value() < second->get_value()) {
+    first->set_next(merge(first->get_next(), second));
+    first->get_next()->set_previous(first);
+    first->remove_previous();
+    return first;
+  }
+  else {
+    second->set_next(merge(first, second->get_next()));
+    second->get_next()->set_previous(second);
+    second->remove_previous();
+    return second;
+  }
+}
+
+public:
+
+~DoublyLinkedList() {
+  Node<T> * t = tail_;
+  while(t != nullptr) {
+    Node<T> * t2 = t;
+    t = t->get_previous();
+    delete t2;
+  }
+  head_ = nullptr;
+  tail_ = nullptr;
+  count_ = 0;
 }
 
 /**
@@ -41,7 +90,7 @@ unsigned long long count() {
  */
 T at (unsigned long long index) {
   if (index < 0 || index > count_) {
-    return nullptr;
+    return NULL;
   }
 
   auto *node = head_;
@@ -58,10 +107,9 @@ T at (unsigned long long index) {
  */
 void add_head(T value) {
   auto * node = new Node<T>(value);
-
-  if (count_ == 0) {
+  if (count_ == 0 && head_ == nullptr) {
     head_ = node;
-    tail_ = head_;
+    tail_ = node;
     count_ += 1;
     return;
   }
@@ -81,7 +129,8 @@ void add_head(T value) {
 void add_tail(T value) {
   auto *node = new Node<T>(value);
 
-  if (count_ == 0) {
+  if (count_ == 0 && tail_ == nullptr) {
+    delete node;
     return add_head(value);
   }
   // [old tail]-> [new tail]
@@ -97,7 +146,7 @@ void add_tail(T value) {
 /**
  * Add a value at the specified index.
  */
-void add(long long index, T value) {
+void add(unsigned long long index, T value) {
   
   if (index == 0) {
     return add_head(value);
@@ -124,7 +173,6 @@ void add(long long index, T value) {
   next->set_previous(node);
 
   count_ += 1;
-
 }
 
 /**
@@ -224,6 +272,16 @@ long long index_of(T value) {
   }
 
   return -1;
+}
+
+void sort() {
+  head_ = merge_sort(head_);
+  auto * node = head_;
+  while (node->has_next()) {
+    node = node->get_next();
+  }
+
+  tail_ = node;
 }
 
 };

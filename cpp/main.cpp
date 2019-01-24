@@ -1,4 +1,4 @@
-#include "stack.hpp"
+#include "linkedlist.hpp"
 #include <string>
 #include <iostream>
 
@@ -8,22 +8,18 @@ using std::string;
 
 int main() {
 
-  auto * stack = new Stack<string>();
+  auto * list = new LinkedList<int>();
+  list->add_tail(24);
+  list->add_tail(423);
+  list->add_tail(2);
+  list->add_tail(5);
+  list->sort();
 
-  stack->push("Hello");
-  stack->push("world");
-  stack->push("how");
-  stack->push("are");
-  stack->push("you?");
-
-  stack->pop();
-  stack->push("youuuu!");
-
-  for (int i = 0; i < stack->size(); i++) {
-    cout << stack->at(i) << " " << i << endl;
+  for (int i = 0; i < list->count(); i++) {
+    cout << i << ": " << list->at(i) << endl;
   }
 
-  delete stack;
+  delete list;
 
   return 0;
 }
