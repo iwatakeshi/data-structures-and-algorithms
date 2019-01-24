@@ -3,5 +3,6 @@
 # Build
 
 ```bash
-g++ -g -std=c++11 -Wno-conversion-null main.cpp
+$ make
+$ ./a.out
 ```
