@@ -66,17 +66,17 @@ Node<T> *merge(Node<T> *first, Node<T> *second) {
 
 public:
 
-// ~DoublyLinkedList() {
-//   Node<T> * t = tail_;
-//   while(t != nullptr) {
-//     Node<T> * t2 = t;
-//     t = t->get_previous();
-//     delete t2;
-//   }
-//   head_ = nullptr;
-//   tail_ = nullptr;
-//   count_ = 0;
-// }
+~DoublyLinkedList() {
+  Node<T> * t = tail_;
+  while(t != nullptr) {
+    Node<T> * t2 = t;
+    t = t->get_previous();
+    delete t2;
+  }
+  head_ = nullptr;
+  tail_ = nullptr;
+  count_ = 0;
+}
 
 /**
  * Return the number of items in the list.
