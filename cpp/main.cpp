@@ -16,7 +16,7 @@ int main() {
   list->sort();
 
   for (int i = 0; i < list->count(); i++) {
-    cout << list->at(i) << " " << i << endl;
+    cout << i << ": " << list->at(i) << endl;
   }
 
   delete list;
