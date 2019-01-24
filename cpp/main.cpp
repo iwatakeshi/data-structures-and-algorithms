@@ -1,4 +1,4 @@
-#include "doublylinkedlist.hpp"
+#include "linkedlist.hpp"
 #include <string>
 #include <iostream>
 
@@ -8,7 +8,7 @@ using std::string;
 
 int main() {
 
-  auto * list = new DoublyLinkedList<int>();
+  auto * list = new LinkedList<int>();
   list->add_tail(24);
   list->add_tail(423);
   list->add_tail(2);

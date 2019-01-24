@@ -2,6 +2,8 @@
 #define LINKEDLIST_H
 #include "node.hpp"
 #include <iostream>
+#include <cstddef>
+
 using std::cout;
 using std::endl;
 
@@ -11,6 +13,51 @@ private:
   Node<T> *head_;
   Node<T> *tail_;
   unsigned long long count_;
+
+  Node<T> *merge_sort(Node<T> *head){
+  if (!head || !head->get_next())
+      return head;
+  Node<T> *second = split(head);
+
+  // Recur for left and right halves
+  head = merge_sort(head);
+  second = merge_sort(second);
+
+  // Merge the two sorted halves
+  return merge(head, second);
+}
+
+Node<T> *split(Node<T> *head) {
+  Node<T> *fast = head, *slow = head;
+  while (fast->get_next() && fast->get_next()->get_next()) {
+      fast = fast->get_next()->get_next();
+      slow = slow->get_next();
+  }
+  Node<T> *temp = slow->get_next();
+  slow->remove_next();
+  return temp;
+}
+
+Node<T> *merge(Node<T> *first, Node<T> *second) {
+  // If first linked list is empty
+  if (!first)
+      return second;
+
+  // If second linked list is empty
+  if (!second)
+      return first;
+
+  // Pick the smaller value
+  if (first->get_value() < second->get_value()) {
+    first->set_next(merge(first->get_next(), second));
+    return first;
+  }
+  else {
+    second->set_next(merge(first, second->get_next()));
+    return second;
+  }
+}
+
 public:
   LinkedList() {
     head_ = nullptr;
@@ -39,7 +86,7 @@ public:
    */
   T at(unsigned long long index) {
     if (index < 0 || index > count_) {
-      return nullptr;
+      return NULL;
     }
 
     auto *node = head_;
@@ -225,6 +272,16 @@ public:
 
     return -1;
   }
+
+  void sort() {
+    head_ = merge_sort(head_);
+    auto * node = head_;
+    while (node->has_next()) {
+      node = node->get_next();
+    }
+
+  tail_ = node;
+}
 
 };
 
