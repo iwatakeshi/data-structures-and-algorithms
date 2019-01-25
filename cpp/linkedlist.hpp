@@ -98,6 +98,22 @@ public:
   }
 
   /**
+   * Set the value at the specified index.
+   */
+  void at(unsigned long long index, T value) {
+    if (index < 0 || index > count_) {
+      return NULL;
+    }
+
+    auto *node = head_;
+
+    for (long long i = 0; i < index; i++) {
+      node = node->get_next();
+    }
+    node->set_value(value);
+  }
+
+  /**
    * Add a value at the beginning.
    */
   void add_head(T value) {
@@ -163,7 +179,7 @@ public:
   }
 
   /**
-   * Remove a value at the beginning
+   * Remove a value at the beginning.
    */
   void remove_head() {
     if (count_ == 0) {
@@ -185,7 +201,7 @@ public:
   }
 
   /**
-   * Remove a value at the end
+   * Remove a value at the end.
    */
 
   void remove_tail() {
@@ -273,6 +289,9 @@ public:
     return -1;
   }
 
+  /**
+   * Sort the list.
+   */
   void sort() {
     head_ = merge_sort(head_);
     auto * node = head_;

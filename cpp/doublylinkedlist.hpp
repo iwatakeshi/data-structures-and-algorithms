@@ -103,7 +103,23 @@ T at (unsigned long long index) {
 }
 
 /**
- * Add a value at the beginning
+ * Set the value at the specified index.
+ */
+void at(unsigned long long index, T value) {
+  if (index < 0 || index > count_) {
+    return NULL;
+  }
+
+  auto *node = head_;
+
+  for (long long i = 0; i < index; i++) {
+    node = node->get_next();
+  }
+  node->set_value(value);
+}
+
+/**
+ * Add a value at the beginning.
  */
 void add_head(T value) {
   auto * node = new Node<T>(value);
@@ -124,7 +140,7 @@ void add_head(T value) {
 }
 
 /**
- * Add a value to the end
+ * Add a value to the end.
  */
 void add_tail(T value) {
   auto *node = new Node<T>(value);
@@ -176,7 +192,7 @@ void add(unsigned long long index, T value) {
 }
 
 /**
- * Remove a value at the beginnning
+ * Remove a value at the beginnning.
  */
 void remove_head() {
   if (count_ == 0) {
@@ -273,7 +289,9 @@ long long index_of(T value) {
 
   return -1;
 }
-
+/**
+ * Sort the list.
+ */
 void sort() {
   head_ = merge_sort(head_);
   auto * node = head_;
