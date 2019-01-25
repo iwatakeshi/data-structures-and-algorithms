@@ -102,7 +102,7 @@ public:
    */
   void at(unsigned long long index, T value) {
     if (index < 0 || index > count_) {
-      return NULL;
+      return;
     }
 
     auto *node = head_;
@@ -164,16 +164,15 @@ public:
     }
 
     auto *current = head_;
-    for (unsigned long long i = 0; i < index; i++) {
+    for (unsigned long long i = 0; i < index - 1; i++) {
       current = current->get_next();
     }
-    auto *next = current->get_next();
 
     auto *node = new Node<T>(value);
 
     // The new node will point to the next node
-    node->set_next(next);
-    // The current node will point to the new node
+    node->set_next(current->get_next());
+
     current->set_next(node);
     count_ += 1;
   }
