@@ -107,7 +107,7 @@ T at (unsigned long long index) {
  */
 void at(unsigned long long index, T value) {
   if (index < 0 || index > count_) {
-    return NULL;
+    return;
   }
 
   auto *node = head_;
@@ -294,6 +294,7 @@ long long index_of(T value) {
  */
 void sort() {
   head_ = merge_sort(head_);
+
   auto * node = head_;
   while (node->has_next()) {
     node = node->get_next();
