@@ -31,7 +31,7 @@ int main() {
   for(int i = 0; i < 50; i++) {
     a.push(i);
   }
-  auto b = a.filter([] (int x) {
+  auto b = a.filter([] (auto x) {
     return x % 2 == 0;
   });
 
