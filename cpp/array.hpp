@@ -188,18 +188,53 @@ public:
     return value;
   }
 
+  /**
+   * Iterate through each value in the array. 
+   */
   void for_each(function<void(T)>const& lambda) {
     for(unsigned long long i = 0; i < count_; i++) {
       lambda(array_[i]);
     }
   }
 
+  /**
+   * Iterate through each value in the array. 
+   */
   void for_each(function<void(T, unsigned long long)>const& lambda) {
     for(unsigned long long i = 0; i < count_; i++) {
       lambda(array_[i], i);
     }
   }
 
+  /**
+   * Filter the array based on a condition.
+   */
+  Array<T> filter(function<bool (T)> const& lambda) {
+    Array<T> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      if (lambda(array_[i])) {
+        temp.push(array_[i]);
+      }
+    }
+    return temp;
+  }
+
+  /**
+   * Filter the array based on a condition.
+   */
+  Array<T> filter(function<bool (T, unsigned long long)> const& lambda) {
+    Array<T> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      if (lambda(array_[i])) {
+        temp.push(array_[i], i);
+      }
+    }
+    return temp;
+  }
+
+  /**
+   * Map the values in the array and return a new array.
+   */
   Array<T> map(function<T (T)> const& lambda) {
     Array<T> temp;
     for(unsigned long long i = 0; i < count_; i++) {
@@ -208,6 +243,9 @@ public:
     return temp;
   }
 
+  /**
+   * Map the values in the array and return a new array.
+   */
   Array<T> map(function<T (T, unsigned long long)> const& lambda) {
     Array<T> temp;
     for(unsigned long long i = 0; i < count_; i++) {
@@ -216,6 +254,33 @@ public:
     return temp;
   }
 
+  /**
+   * Map the values in the array and return a new array.
+   */
+  template <typename U>
+  Array<U> map(function<U (T)> const& lambda) {
+    Array<U> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i]));
+    }
+    return temp;
+  }
+
+  /**
+   * Map the values in the array and return a new array.
+   */
+  template <typename U>
+  Array<U> map(function<U (T, unsigned long long)> const& lambda) {
+    Array<U> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i], i));
+    }
+    return temp;
+  }
+
+  /**
+   * Reserve additional space for the array.
+   */
   void reserve(unsigned long long count) {
     if (count_ == 0) {
       array_ = new T[count];
@@ -233,24 +298,6 @@ public:
     array_ = temp;
     
     count_ = count_ + count;
-  }
-
-  template <typename U>
-  Array<U> map(function<U (T)> const& lambda) {
-    Array<U> temp;
-    for(unsigned long long i = 0; i < count_; i++) {
-      temp.push(lambda(array_[i]));
-    }
-    return temp;
-  }
-
-  template <typename U>
-  Array<U> map(function<U (T, unsigned long long)> const& lambda) {
-    Array<U> temp;
-    for(unsigned long long i = 0; i < count_; i++) {
-      temp.push(lambda(array_[i], i));
-    }
-    return temp;
   }
 
   /**
