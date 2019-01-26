@@ -225,8 +225,8 @@ public:
   Array<T> filter(function<bool (T, unsigned long long)> const& lambda) {
     Array<T> temp;
     for(unsigned long long i = 0; i < count_; i++) {
-      if (lambda(array_[i])) {
-        temp.push(array_[i], i);
+      if (lambda(array_[i], i)) {
+        temp.push(array_[i]);
       }
     }
     return temp;
