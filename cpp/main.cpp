@@ -34,7 +34,7 @@ int main() {
     return x * 2;
   });
 
-  b.forEach([](auto x, auto i) {
+  b.for_each([](auto x, auto i) {
     cout << i << ": " << x << endl;
   });
 

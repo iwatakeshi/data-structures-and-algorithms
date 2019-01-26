@@ -188,13 +188,13 @@ public:
     return value;
   }
 
-  void forEach(function<void(T)>const& lambda) {
+  void for_each(function<void(T)>const& lambda) {
     for(unsigned long long i = 0; i < count_; i++) {
       lambda(array_[i]);
     }
   }
 
-  void forEach(function<void(T, unsigned long long)>const& lambda) {
+  void for_each(function<void(T, unsigned long long)>const& lambda) {
     for(unsigned long long i = 0; i < count_; i++) {
       lambda(array_[i], i);
     }
