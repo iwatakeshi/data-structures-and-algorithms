@@ -5,7 +5,7 @@
 #include <functional>
 
 template<typename T, typename U>
-class HashMap{
+class HashMap {
 private:
   DoublyLinkedList<std::pair<T, U>> * table_ = nullptr;
 
