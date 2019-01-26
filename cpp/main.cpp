@@ -28,10 +28,11 @@ int main() {
   // delete list;
 
   Array<int> a;
-  a.push(1);
-  a.push(2);
-  auto b = a.map<int>([] (int x) {
-    return x * 2;
+  for(int i = 0; i < 50; i++) {
+    a.push(i);
+  }
+  auto b = a.filter([] (int x) {
+    return x % 2 == 0;
   });
 
   b.for_each([](auto x, auto i) {
