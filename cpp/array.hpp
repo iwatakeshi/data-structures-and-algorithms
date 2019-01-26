@@ -1,5 +1,7 @@
 #ifndef ARRAY_H
 #define ARRAY_H
+#include <functional>
+using std::function;
 
 template <class T>
 class Array {
@@ -184,6 +186,71 @@ public:
     array_[count_ - 1] = 0;
     count_ -= 1;
     return value;
+  }
+
+  void forEach(function<void(T)>const& lambda) {
+    for(unsigned long long i = 0; i < count_; i++) {
+      lambda(array_[i]);
+    }
+  }
+
+  void forEach(function<void(T, unsigned long long)>const& lambda) {
+    for(unsigned long long i = 0; i < count_; i++) {
+      lambda(array_[i], i);
+    }
+  }
+
+  Array<T> map(function<T (T)> const& lambda) {
+    Array<T> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i]));
+    }
+    return temp;
+  }
+
+  Array<T> map(function<T (T, unsigned long long)> const& lambda) {
+    Array<T> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i], i));
+    }
+    return temp;
+  }
+
+  void reserve(unsigned long long count) {
+    if (count_ == 0) {
+      array_ = new T[count];
+      count_ = count;
+      return;
+    }
+
+    T * temp = new T[count_ + count];
+
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp[i] = array_[i];
+    }
+
+    delete [] array_;
+    array_ = temp;
+    
+    count_ = count_ + count;
+  }
+
+  template <typename U>
+  Array<U> map(function<U (T)> const& lambda) {
+    Array<U> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i]));
+    }
+    return temp;
+  }
+
+  template <typename U>
+  Array<U> map(function<U (T, unsigned long long)> const& lambda) {
+    Array<U> temp;
+    for(unsigned long long i = 0; i < count_; i++) {
+      temp.push(lambda(array_[i], i));
+    }
+    return temp;
   }
 
   /**
