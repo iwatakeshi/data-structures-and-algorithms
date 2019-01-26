@@ -66,12 +66,16 @@ public:
   }
   
   ~LinkedList() {
-    count_= 0;
-    for (long long i = 0; i < count_; i++) {
-      remove(i);
+    auto * h = head_;
+    while (h != nullptr) {
+      auto * next = h->get_next();
+      delete h;
+      h = next;
     }
-    delete head_;
-    delete tail_;
+
+    head_ = nullptr;
+    tail_ = nullptr;
+    count_ = 0;
   }
 
   /**
@@ -138,9 +142,8 @@ public:
     auto *node = new Node<T>(value);
 
     if (count_ == 0) {
-      head_ = node;
-      tail_ = head_;
-      count_ += 1;
+      delete node;
+      add_head(value);
       return;
     }
 
