@@ -31,13 +31,11 @@ int main() {
   for(int i = 0; i < 50; i++) {
     a.push(i);
   }
-  auto b = a.filter([] (auto x) {
-    return x % 2 == 0;
+  auto b = a.filter([] (auto x, auto i) {
+    return i % 2 == 0;
   });
 
-  b.for_each([](auto x, auto i) {
-    cout << i << ": " << x << endl;
-  });
+  cout << b << endl;
 
   return 0;
 }
