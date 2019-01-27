@@ -1,7 +1,15 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 #include <functional>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include <typeinfo>
+
 using std::function;
+using std::ostream;
+using std::string;
+using std::is_fundamental;
 
 template <class T>
 class Array {
@@ -107,6 +115,26 @@ public:
     count_ = count_ * right.count_;
 
     return *this;
+  }
+
+  /**
+   * Return an output stream representation of the array.
+   */
+  friend ostream& operator << (ostream& os, const Array<T>& array) {
+    string seperator = ", ";
+    string result = "";
+    for(unsigned long long i = 0; i < array.count_; i++) {
+      if (i == array.count_ - 1) {
+        seperator = "";
+      }
+      if (is_fundamental<T>::value) {
+        result += (std::to_string(array.array_[i]) + seperator);
+      } else {
+        result += (typeid(array).name() + seperator);
+      }
+    }
+    os  << "[" << result << "]";
+    return os;
   }
 
   /**
@@ -276,6 +304,18 @@ public:
       temp.push(lambda(array_[i], i));
     }
     return temp;
+  }
+
+  string join() {
+    return this->join(",");
+  }
+
+  string join(const string& seperator) {
+    string result = "";
+    this->for_each([&] (T x) {
+      result += (((string) x) + seperator);
+    });
+    return result;
   }
 
   /**
