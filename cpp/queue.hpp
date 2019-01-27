@@ -18,7 +18,7 @@ Queue() {
   delete list;
 }
 
-T at(unsigned long long index) {
+T at(uint64_t index) {
   return list->at(index);
 }
 
@@ -40,7 +40,7 @@ T back() {
   return at(size() - 1);
 }
 
-unsigned long long size() {
+uint64_t size() {
   return list->length();
 }
 

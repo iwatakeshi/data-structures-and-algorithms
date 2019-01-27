@@ -15,10 +15,10 @@ template <class T>
 class Array {
 private:
   T * array_ = nullptr;
-  unsigned long long length_ = 0;
+  uint64_t length_ = 0;
 public:
   Array() {}
-  Array(unsigned long long count) {
+  Array(uint64_t count) {
     array_ = new T[count];
     length_ = count;
   }
@@ -30,7 +30,7 @@ public:
   /**
    * Return the value at the specified index.
    */
-  T& operator [] (unsigned long long index) {
+  T& operator [] (uint64_t index) {
     if (index >= length_) {
       throw "Index out of bounds.";
     }
@@ -42,7 +42,7 @@ public:
    */
   Array<T> operator + (const Array<T> & right) {
     Array<T> temp = *this;
-    for (unsigned long long i = 0; i < right.length_; i++) {
+    for (uint64_t i = 0; i < right.length_; i++) {
       temp.push(right.array_[i]);
     }
     return temp;
@@ -51,10 +51,10 @@ public:
   /**
    * Return an array its value(s) n times.
    */
-  Array<T> operator * (const unsigned long long int & right) {
+  Array<T> operator * (const uint64_t & right) {
     Array<T> temp;
-    for (unsigned long long i = 0; i < right; i++) {
-     for (unsigned long long j = 0; j < this->length_; j++) {
+    for (uint64_t i = 0; i < right; i++) {
+     for (uint64_t j = 0; j < this->length_; j++) {
        temp.push(this->array_[j]);
      }
     }
@@ -68,7 +68,7 @@ public:
   Array<T>& operator = (const Array<T> & right) {
     if (length_ < right.length_) {
       T * temp = new T[right.length_];
-      for (unsigned long long i = 0; i < right.length_; i++) {
+      for (uint64_t i = 0; i < right.length_; i++) {
         temp[i] = right.array_[i];
       }
       length_ = right.length_;
@@ -77,7 +77,7 @@ public:
       return *this;
     }
 
-    for (unsigned long long i = 0; i < right.length_; i++) {
+    for (uint64_t i = 0; i < right.length_; i++) {
       array_[i] = right.array_[i];
     }
 
@@ -90,7 +90,7 @@ public:
    * Assign a concantenated array.
    */
   Array<T>& operator += (const Array<T> & right) {
-    for (unsigned long long i = 0; i < right.length_; i++) {
+    for (uint64_t i = 0; i < right.length_; i++) {
       this->push(right.array_[i]);
     }
 
@@ -102,9 +102,9 @@ public:
    */
   Array<T>& operator *= (const Array<T> & right) {
     T * temp = new T[this->length_ * right.length_];
-    unsigned long long index = 0;
-    for (unsigned long long i = 0; i < right.length_; i++) {
-     for (unsigned long long j = 0; j < this->length_; j++) {
+    uint64_t index = 0;
+    for (uint64_t i = 0; i < right.length_; i++) {
+     for (uint64_t j = 0; j < this->length_; j++) {
        temp[index] = this->array_[j];
        index += 1;
      }
@@ -123,7 +123,7 @@ public:
   friend ostream& operator << (ostream& os, const Array<T>& array) {
     string seperator = ", ";
     string result = "";
-    for(unsigned long long i = 0; i < array.length_; i++) {
+    for(uint64_t i = 0; i < array.length_; i++) {
       if (i == array.length_ - 1) {
         seperator = "";
       }
@@ -152,7 +152,7 @@ public:
     }
 
     T * temp = new T[length_ - 1];
-    for (unsigned long long i = 1; i < length_; i++) {
+    for (uint64_t i = 1; i < length_; i++) {
       temp[i - 1] = array_[i];
     }
 
@@ -168,7 +168,7 @@ public:
      T * temp = new T[length_ + 1];
      temp[0] = value;
 
-     for (unsigned long long i = 1; i < length_ + 1; i++) {
+     for (uint64_t i = 1; i < length_ + 1; i++) {
        temp[i] = array_[i - 1];
      }
 
@@ -190,7 +190,7 @@ public:
 
     T * temp = new T[length_ + 1];
     
-    for (unsigned long long i = 0; i < length_; i++) {
+    for (uint64_t i = 0; i < length_; i++) {
       temp[i] = array_[i];
     }
 
@@ -220,7 +220,7 @@ public:
    * Iterate through each value in the array. 
    */
   void for_each(function<void(T)>const& lambda) {
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       lambda(array_[i]);
     }
   }
@@ -228,8 +228,8 @@ public:
   /**
    * Iterate through each value in the array. 
    */
-  void for_each(function<void(T, unsigned long long)>const& lambda) {
-    for(unsigned long long i = 0; i < length_; i++) {
+  void for_each(function<void(T, uint64_t)>const& lambda) {
+    for(uint64_t i = 0; i < length_; i++) {
       lambda(array_[i], i);
     }
   }
@@ -239,7 +239,7 @@ public:
    */
   Array<T> filter(function<bool (T)> const& lambda) {
     Array<T> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       if (lambda(array_[i])) {
         temp.push(array_[i]);
       }
@@ -250,9 +250,9 @@ public:
   /**
    * Filter the array based on a condition.
    */
-  Array<T> filter(function<bool (T, unsigned long long)> const& lambda) {
+  Array<T> filter(function<bool (T, uint64_t)> const& lambda) {
     Array<T> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       if (lambda(array_[i], i)) {
         temp.push(array_[i]);
       }
@@ -265,7 +265,7 @@ public:
    */
   Array<T> map(function<T (T)> const& lambda) {
     Array<T> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       temp.push(lambda(array_[i]));
     }
     return temp;
@@ -274,9 +274,9 @@ public:
   /**
    * Map the values in the array and return a new array.
    */
-  Array<T> map(function<T (T, unsigned long long)> const& lambda) {
+  Array<T> map(function<T (T, uint64_t)> const& lambda) {
     Array<T> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       temp.push(lambda(array_[i], i));
     }
     return temp;
@@ -288,7 +288,7 @@ public:
   template <typename U>
   Array<U> map(function<U (T)> const& lambda) {
     Array<U> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       temp.push(lambda(array_[i]));
     }
     return temp;
@@ -298,9 +298,9 @@ public:
    * Map the values in the array and return a new array.
    */
   template <typename U>
-  Array<U> map(function<U (T, unsigned long long)> const& lambda) {
+  Array<U> map(function<U (T, uint64_t)> const& lambda) {
     Array<U> temp;
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       temp.push(lambda(array_[i], i));
     }
     return temp;
@@ -321,7 +321,7 @@ public:
   /**
    * Reserve additional space for the array.
    */
-  void reserve(unsigned long long count) {
+  void reserve(uint64_t count) {
     if (length_ == 0) {
       array_ = new T[count];
       length_ = count;
@@ -330,7 +330,7 @@ public:
 
     T * temp = new T[length_ + count];
 
-    for(unsigned long long i = 0; i < length_; i++) {
+    for(uint64_t i = 0; i < length_; i++) {
       temp[i] = array_[i];
     }
 
@@ -343,7 +343,7 @@ public:
   /**
    * Return the number of items in the array.
    */
-  unsigned long long length() {
+  uint64_t length() {
     return length_;
   }
 };

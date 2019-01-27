@@ -14,7 +14,7 @@ class DoublyLinkedList {
 private:
 Node<T> * head_ = nullptr;
 Node<T> * tail_ = nullptr;
-unsigned long long length_ = 0;
+uint64_t length_ = 0;
 
 Node<T> *merge_sort(Node<T> *head){
   if (!head || !head->get_next())
@@ -81,7 +81,7 @@ public:
 /**
  * Return the number of items in the list.
  */
-unsigned long long length() {
+uint64_t length() {
   return length_;
 }
 
@@ -92,7 +92,7 @@ bool is_empty() {
 /**
  * Return the value at the specified index.
  */
-T at (unsigned long long index) {
+T at (uint64_t index) {
   if (index < 0 || index > length_) {
     return NULL;
   }
@@ -109,7 +109,7 @@ T at (unsigned long long index) {
 /**
  * Set the value at the specified index.
  */
-void at(unsigned long long index, T value) {
+void at(uint64_t index, T value) {
   if (index < 0 || index > length_) {
     return;
   }
@@ -166,7 +166,7 @@ void add_tail(T value) {
 /**
  * Add a value at the specified index.
  */
-void add(unsigned long long index, T value) {
+void add(uint64_t index, T value) {
   
   if (index == 0) {
     return add_head(value);
@@ -180,7 +180,7 @@ void add(unsigned long long index, T value) {
 
   auto * node = new Node<T>(value);
 
-  for (unsigned long long i = 0; i < index - 1; i++) {
+  for (uint64_t i = 0; i < index - 1; i++) {
     current = current->get_next();
   }
 
@@ -236,7 +236,7 @@ void remove_tail() {
   length_ -= 1;
 }
 
-void remove(long long index) {
+void remove(uint64_t index) {
   if (index < 0 || index >= length_) {
     return;
   }

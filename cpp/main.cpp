@@ -35,6 +35,9 @@ int main() {
     return i % 2 == 0;
   });
 
+  a += b;
+
+  cout << a << endl;
   cout << b << endl;
 
   return 0;

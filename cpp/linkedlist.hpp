@@ -12,7 +12,7 @@ class LinkedList {
 private:
   Node<T> *head_;
   Node<T> *tail_;
-  unsigned long long length_;
+  uint64_t length_;
 
   Node<T> *merge_sort(Node<T> *head){
   if (!head || !head->get_next())
@@ -81,7 +81,7 @@ public:
   /**
    * Return the number of items in the list.
    */
-  unsigned long long length () {
+  uint64_t length () {
     return length_;
   }
 
@@ -92,7 +92,7 @@ public:
   /**
    * Return the value at the specified index.
    */
-  T at(unsigned long long index) {
+  T at(uint64_t index) {
     if (index < 0 || index > length_) {
       return NULL;
     }
@@ -108,7 +108,7 @@ public:
   /**
    * Set the value at the specified index.
    */
-  void at(unsigned long long index, T value) {
+  void at(uint64_t index, T value) {
     if (index < 0 || index > length_) {
       return;
     }
@@ -171,7 +171,7 @@ public:
     }
 
     auto *current = head_;
-    for (unsigned long long i = 0; i < index - 1; i++) {
+    for (uint64_t i = 0; i < index - 1; i++) {
       current = current->get_next();
     }
 
@@ -238,7 +238,7 @@ public:
     length_ -= 1;
   }
 
-  void remove(long long index) {
+  void remove(uint64_t index) {
     if (index < 0 || index >= length_) {
       return;
     }
