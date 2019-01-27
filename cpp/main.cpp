@@ -28,7 +28,7 @@ int main() {
   // delete list;
 
   Array<int> a;
-  for(int i = 0; i < 50; i++) {
+  for(int i = 0; i <= 50; i++) {
     a.push(i);
   }
   auto b = a.filter([] (auto x, auto i) {

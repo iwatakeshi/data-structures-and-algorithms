@@ -51,11 +51,11 @@ T back() {
 }
 
 unsigned long long size() {
-  return list->count();
+  return list->length();
 }
 
 bool is_empty() {
-  return list->count() == 0;
+  return list->is_empty();
 }
 
 };

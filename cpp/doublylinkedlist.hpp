@@ -14,7 +14,7 @@ class DoublyLinkedList {
 private:
 Node<T> * head_ = nullptr;
 Node<T> * tail_ = nullptr;
-unsigned long long count_ = 0;
+unsigned long long length_ = 0;
 
 Node<T> *merge_sort(Node<T> *head){
   if (!head || !head->get_next())
@@ -75,21 +75,25 @@ public:
   }
   head_ = nullptr;
   tail_ = nullptr;
-  count_ = 0;
+  length_ = 0;
 }
 
 /**
  * Return the number of items in the list.
  */
-unsigned long long count() {
-  return count_;
+unsigned long long length() {
+  return length_;
+}
+
+bool is_empty() {
+  return length_ == 0;
 }
 
 /**
  * Return the value at the specified index.
  */
 T at (unsigned long long index) {
-  if (index < 0 || index > count_) {
+  if (index < 0 || index > length_) {
     return NULL;
   }
 
@@ -106,7 +110,7 @@ T at (unsigned long long index) {
  * Set the value at the specified index.
  */
 void at(unsigned long long index, T value) {
-  if (index < 0 || index > count_) {
+  if (index < 0 || index > length_) {
     return;
   }
 
@@ -123,10 +127,10 @@ void at(unsigned long long index, T value) {
  */
 void add_head(T value) {
   auto * node = new Node<T>(value);
-  if (count_ == 0 && head_ == nullptr) {
+  if (length_ == 0 && head_ == nullptr) {
     head_ = node;
     tail_ = node;
-    count_ += 1;
+    length_ += 1;
     return;
   }
 
@@ -136,7 +140,7 @@ void add_head(T value) {
   head_->set_previous(node);
   head_ = node;
 
-  count_ += 1;
+  length_ += 1;
 }
 
 /**
@@ -145,7 +149,7 @@ void add_head(T value) {
 void add_tail(T value) {
   auto *node = new Node<T>(value);
 
-  if (count_ == 0 && tail_ == nullptr) {
+  if (length_ == 0 && tail_ == nullptr) {
     delete node;
     return add_head(value);
   }
@@ -156,7 +160,7 @@ void add_tail(T value) {
   // Node becomes new tail
   tail_ = node;
 
-  count_ += 1;
+  length_ += 1;
 }
 
 /**
@@ -168,7 +172,7 @@ void add(unsigned long long index, T value) {
     return add_head(value);
   }
 
-  if (index >= count_) {
+  if (index >= length_) {
     return add_tail(value);
   }
 
@@ -188,14 +192,14 @@ void add(unsigned long long index, T value) {
   current->set_next(node);
   next->set_previous(node);
 
-  count_ += 1;
+  length_ += 1;
 }
 
 /**
  * Remove a value at the beginnning.
  */
 void remove_head() {
-  if (count_ == 0) {
+  if (length_ == 0) {
     return;
   }
 
@@ -204,9 +208,9 @@ void remove_head() {
 
   delete node;
 
-  count_ -= 1;
+  length_ -= 1;
 
-  if (count_ == 0) {
+  if (length_ == 0) {
     auto * node = tail_;
     tail_ = nullptr;
     delete node;
@@ -217,11 +221,11 @@ void remove_head() {
  * Remove a value at the end.
  */
 void remove_tail() {
-  if (count_ == 0) {
+  if (length_ == 0) {
     return;
   }
 
-  if (count_ == 1) {
+  if (length_ == 1) {
     return remove_head();
   }
 
@@ -229,19 +233,19 @@ void remove_tail() {
   previous->remove_next();
   tail_ = previous;
 
-  count_ -= 1;
+  length_ -= 1;
 }
 
 void remove(long long index) {
-  if (index < 0 || index >= count_) {
+  if (index < 0 || index >= length_) {
     return;
   }
 
-  if (count_ == 1 || index == 0) {
+  if (length_ == 1 || index == 0) {
     return remove_head();
   }
 
-  if (index == count_ - 1) {
+  if (index == length_ - 1) {
     return remove_tail();
   }
 
@@ -259,14 +263,14 @@ void remove(long long index) {
 
   delete node;
 
-  count_ -= 1;
+  length_ -= 1;
 }
 
 /**
  * Return the index of a value.
  */
 long long index_of(T value) {
-  if (count_ == 0) {
+  if (length_ == 0) {
     return -1;
   }
 
@@ -275,12 +279,12 @@ long long index_of(T value) {
   }
 
   if (tail_->get_value() == value) {
-    return count_ - 1;
+    return length_ - 1;
   }
 
   auto * current = head_;
 
-  for(long long i = 0; i < count_; i++) {
+  for(long long i = 0; i < length_; i++) {
     if (current && current->get_value() == value) {
       return i;
     }
