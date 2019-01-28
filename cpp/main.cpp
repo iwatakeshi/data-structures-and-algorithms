@@ -59,19 +59,5 @@ int main() {
     print_time(duration);
   }
 
-  // Array<int> a;
-
-  // a.push(1);
-  // a.push(2);
-  // a.push(3);
-
-  // a.unshift(4);
-  // a.shift();
-  // a *= 2;
-
-  // a.for_each([](auto x, auto i) {
-  //   cout << x << " " << i << endl;
-  // });
-
-  // return 0;
+  return 0;
 }
