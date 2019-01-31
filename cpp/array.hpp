@@ -36,7 +36,7 @@ public:
   /**
    * Return the value at the specified index.
    */
-  T& operator [] (uint64_t const& index) {
+  T& operator [] (int64_t const& index) {
     if (index < 0 || index >= length()) {
       throw std::out_of_range("Index is out of bounds");
     }
@@ -284,6 +284,14 @@ public:
     return temp;
   }
 
+  Array<T> reverse() {
+    Array<T> temp;
+    for(auto i = length() - 1; i >= 0; i--) {
+      temp.push(this->operator[](i));
+    }
+    return temp;
+  } 
+
   string join() {
     return this->join(",");
   }
@@ -315,7 +323,7 @@ public:
     array_ = array;
   }
 
-  uint64_t length() {
+  int64_t length() {
     return length_ - offset_;
   }
 
